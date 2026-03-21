@@ -1,0 +1,103 @@
+{
+  "startScene": "intro",
+  "passwordHint": "Het antwoord op alles",
+  "scenes": {
+    "intro": {
+      "image": "tranendhartje.enc",
+      "text": "Emily is droevig. Ze heeft de beste catch van Tinder geghost... 6 jaar geleden. Misschien is het tijd om het opnieuw te proberen?",
+      "left": {
+        "label": "Nee, laat maar",
+        "next": "niet-bumble"
+      },
+      "right": {
+        "label": "Ga op Bumble!",
+        "next": "bumble-profiel"
+      }
+    },
+    "niet-bumble": {
+      "image": "olifantvagina.enc",
+      "text": "Emily blijft alleen op de bank zitten. Geen Bumble, geen liefde. Einde verhaal."
+    },
+    "bumble-profiel": {
+      "image": "emilyinponchobumblefoto.enc",
+      "text": "Emily maakt een profiel aan waar ze veel levenslust toont. Ze scrollt door de profielen en dan... Wat ziet ze daar?! Michael?? 😳",
+      "left": {
+        "label": "Nee, niet swipen",
+        "next": "niet-swipen"
+      },
+      "right": {
+        "label": "Swipe naar rechts!",
+        "next": "match"
+      }
+    },
+    "niet-swipen": {
+      "image": "GUILLAUME.enc",
+      "text": "Te laat! Andere kapers op de kust zijn weg met de beste catch van Tinder. Einde verhaal."
+    },
+    "match": {
+      "image": "michaelinjacuzzisleezy.enc",
+      "text": "Hellooo, it's a match! 🎉 De sleezy boy stuurt meteen een berichtje en vraagt je voor een date. Wat doe je?",
+      "left": {
+        "label": "Opnieuw ghosten 👻",
+        "next": "ghost-again"
+      },
+      "right": {
+        "label": "Deze keer wel meeten!",
+        "next": "first-date"
+      }
+    },
+    "ghost-again": {
+      "image": "tranendhartje.enc",
+      "text": "Emily ghost opnieuw. Sommige dingen veranderen nooit... Einde verhaal."
+    },
+    "first-date": {
+      "image": "afstand.enc",
+      "text": "Ze gaan op date, maar wat gebeurt er daar: Michael voelt AFSTAND!!! Wat doe je?",
+      "left": {
+        "label": "Weglopen",
+        "next": "weglopen"
+      },
+      "right": {
+        "label": "Toch naar Geshaa lokken",
+        "next": "geshaa"
+      }
+    },
+    "weglopen": {
+      "image": "tranendhartje.enc",
+      "text": "Emily loopt weg. De afstand was te groot... Einde verhaal."
+    },
+    "geshaa": {
+      "image": "alcohol.enc",
+      "text": "Ze lokt Michael naar de bossen, maar ook dat volstaat niet. Wat is het redmiddel??",
+      "puzzle": {
+        "answers": ["alcohol", "zat voeren"],
+        "hint": "De foto is een tip... 🍷",
+        "next": "na-alcohol"
+      }
+    },
+    "na-alcohol": {
+      "image": "zatgevoerd.enc",
+      "text": "Succes, Michael is zatgevoerd en het is meteen koekenbak. Jullie zijn onafscheidelijk en ontdekken niet alleen elkaars lijf, maar ook de wereld. Weet je welke plaatsen ze allemaal hebben ontdekt?",
+      "multiPuzzle": {
+        "answers": ["Mullertahl", "Moezel", "Tenerife", "Oostduinkerke", "Aarschot", "Leuven", "Mollekesberg", "Thailand"],
+        "hints": [
+          "Denk aan Luxemburg en wandelen...",
+          "Denk aan wijn en Duitsland...",
+          "Denk aan zon en een vulkanisch eiland...",
+          "Denk aan de kust en garnalen...",
+          "Denk aan een stad in Vlaams-Brabant...",
+          "Denk aan de studentenstad...",
+          "Denk aan een berg dicht bij huis...",
+          "Denk aan tempels en pad thai..."
+        ],
+        "wrongText": "Dat is ook een mooie plaats, maar dat is niet wat we zoeken!",
+        "hintAfter": 3,
+        "next": "na-reizen"
+      }
+    },
+    "na-reizen": {
+      "image": "emilykusopbed.enc",
+      "text": "Wordt vervolgd... 💕"
+    }
+  }
+}
