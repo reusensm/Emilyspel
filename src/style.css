@@ -232,6 +232,264 @@ body {
   animation: shake 0.5s ease;
 }
 
+/* ---- Timeline Puzzle ---- */
+.puzzle-card.timeline-card .card-overlay {
+  background: rgba(0,0,0,0.6);
+}
+
+.puzzle-card.timeline-card .card-content {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  padding: 14px;
+  overflow: hidden;
+}
+
+.timeline-container {
+  flex: 1;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.timeline-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 80px));
+  justify-content: center;
+  gap: 6px;
+  padding: 4px 0;
+  overflow-y: auto;
+}
+
+@media (max-width: 360px) {
+  .timeline-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+.timeline-slot {
+  border-radius: 8px;
+  border: 2px solid rgba(255,255,255,0.3);
+  overflow: hidden;
+  cursor: pointer;
+  transition: border-color 0.3s, transform 0.15s;
+  position: relative;
+  background: rgba(0,0,0,0.2);
+}
+
+.timeline-slot:active {
+  transform: scale(0.96);
+}
+
+.timeline-slot.tl-correct {
+  border-color: #51cf66;
+  border-width: 3px;
+  cursor: default;
+}
+
+.timeline-slot.tl-selected {
+  border-color: #ffd43b;
+  border-width: 3px;
+  transform: scale(1.05);
+}
+
+.timeline-img {
+  width: 100%;
+  aspect-ratio: 1;
+  background-size: cover;
+  background-position: center;
+  background-color: #555;
+}
+
+.timeline-date {
+  font-size: 0.55rem;
+  font-weight: 700;
+  color: white;
+  text-align: center;
+  padding: 2px 2px;
+  background: rgba(0,0,0,0.5);
+  line-height: 1.2;
+}
+
+.timeline-num {
+  position: absolute;
+  top: 3px;
+  left: 4px;
+  background: rgba(0,0,0,0.6);
+  color: white;
+  font-size: 0.65rem;
+  font-weight: 700;
+  border-radius: 4px;
+  padding: 1px 4px;
+}
+
+.timeline-hint {
+  font-size: 0.75rem;
+  color: rgba(255,255,255,0.75);
+  text-align: center;
+  margin-top: 6px;
+}
+
+.timeline-progress {
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: white;
+  text-align: center;
+  margin-top: 4px;
+}
+
+/* ---- Slide Puzzle ---- */
+.puzzle-card.slide-card .card-content {
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.slide-grid {
+  max-width: 280px;
+  margin: 0 auto 10px;
+}
+
+.slide-tile {
+  border-radius: 4px;
+  cursor: pointer;
+  transition: transform 0.15s ease;
+  background-color: #555;
+}
+
+.slide-tile:hover:not(.slide-empty) {
+  transform: scale(0.95);
+  filter: brightness(1.1);
+}
+
+.slide-empty {
+  background: rgba(0, 0, 0, 0.3) !important;
+  cursor: default;
+}
+
+/* ---- Word Search ---- */
+.ws-grid {
+  display: grid;
+  gap: 1px;
+  max-width: 300px;
+  margin: 0 auto 8px;
+  -webkit-user-select: none;
+  user-select: none;
+}
+
+.ws-cell {
+  aspect-ratio: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: white;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 3px;
+  cursor: pointer;
+  transition: background 0.15s;
+  text-transform: uppercase;
+}
+
+.ws-cell.ws-selecting {
+  background: rgba(255, 220, 100, 0.5);
+}
+
+.ws-cell.ws-found {
+  background: rgba(81, 207, 102, 0.7);
+}
+
+.ws-words {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  justify-content: center;
+  margin-bottom: 8px;
+}
+
+.ws-word {
+  padding: 3px 8px;
+  border-radius: 6px;
+  background: rgba(255, 255, 255, 0.2);
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: rgba(255, 255, 255, 0.8);
+}
+
+.ws-word.ws-struck {
+  background: rgba(81, 207, 102, 0.7);
+  color: white;
+  text-decoration: line-through;
+}
+
+.ws-msg {
+  text-align: center;
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: rgba(255, 255, 255, 0.8);
+  margin-top: 4px;
+  min-height: 1.2em;
+}
+
+/* ---- Wordle ---- */
+.wordle-grid {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  margin-bottom: 12px;
+}
+
+.wordle-row {
+  display: flex;
+  gap: 4px;
+}
+
+.wordle-cell {
+  width: 40px;
+  height: 40px;
+  border: 2px solid rgba(255, 255, 255, 0.3);
+  border-radius: 6px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.2rem;
+  font-weight: 700;
+  color: white;
+  text-transform: uppercase;
+  background: transparent;
+}
+
+.wordle-cell.wordle-flip {
+  animation: wordleFlip 0.4s ease forwards;
+}
+
+.wordle-cell.wordle-correct {
+  background: #538d4e;
+  border-color: #538d4e;
+}
+
+.wordle-cell.wordle-present {
+  background: #b59f3b;
+  border-color: #b59f3b;
+}
+
+.wordle-cell.wordle-absent {
+  background: rgba(255, 255, 255, 0.15);
+  border-color: rgba(255, 255, 255, 0.15);
+}
+
+@keyframes wordleFlip {
+  0% { transform: scaleY(1); }
+  50% { transform: scaleY(0); }
+  100% { transform: scaleY(1); }
+}
+
 /* ---- Multi Puzzle ---- */
 .multi-slots {
   display: flex;
@@ -256,6 +514,16 @@ body {
   background: rgba(81, 207, 102, 0.85);
   color: white;
   transform: scale(1.05);
+}
+
+.multi-hint {
+  color: #7ec8e3;
+  font-weight: 700;
+  font-size: 0.85rem;
+  text-align: center;
+  margin-top: 6px;
+  min-height: 1.2em;
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.4);
 }
 
 .multi-progress {

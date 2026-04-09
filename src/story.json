@@ -1,6 +1,6 @@
 {
   "startScene": "intro",
-  "passwordHint": "Het antwoord op alles",
+  "passwordHint": "Michael weet het wachtwoord niet meer. Hij weet wel dat het iets is wat beter is bij jou dan bij hem, wat de reden is dat hij het niet meer weet...",
   "scenes": {
     "intro": {
       "image": "tranendhartje.enc",
@@ -35,7 +35,7 @@
       "text": "Te laat! Andere kapers op de kust zijn weg met de beste catch van Tinder. Einde verhaal."
     },
     "match": {
-      "image": "michaelinjacuzzisleezy.enc",
+      "image": "michaeljacuzz.enc",
       "text": "Hellooo, it's a match! 🎉 De sleezy boy stuurt meteen een berichtje en vraagt je voor een date. Wat doe je?",
       "left": {
         "label": "Opnieuw ghosten 👻",
@@ -72,12 +72,28 @@
       "puzzle": {
         "answers": ["alcohol", "zat voeren"],
         "hint": "De foto is een tip... 🍷",
+        "next": "grasheide-volgorde"
+      }
+    },
+    "grasheide-volgorde": {
+      "image": "grasheide04052025.enc",
+      "text": "Michael heb je sindsdien vaak naar Gesha kunnen lokken, daar is steeds bewijs van! Zet de foto's in de juiste volgorde.",
+      "timeline": {
+        "photos": [
+          { "image": "grasheide04052025.enc",    "date": "4 mei 2025" },
+          { "image": "grasheide16052025.enc",    "date": "16 mei 2025" },
+          { "image": "grasheide24082025.enc",    "date": "24 aug 2025" },
+          { "image": "grasheide23102025.enc",    "date": "23 okt 2025" },
+          { "image": "grasheide29112025.enc",    "date": "29 nov 2025" },
+          { "image": "grasheide06122025.enc",    "date": "6 dec 2025" },
+          { "image": "grasheide05042026.enc",    "date": "5 apr 2026" }
+        ],
         "next": "na-alcohol"
       }
     },
     "na-alcohol": {
       "image": "zatgevoerd.enc",
-      "text": "Succes, Michael is zatgevoerd en het is meteen koekenbak. Jullie zijn onafscheidelijk en ontdekken niet alleen elkaars lijf, maar ook de wereld. Weet je welke plaatsen ze allemaal hebben ontdekt?",
+      "text": "Succes, Michael is zatgevoerd en het is meteen koekenbak. Jullie zijn onafscheidelijk en ontdekken niet alleen Grasheide, maar ook de wereld. Weet je welke plaatsen ze allemaal hebben ontdekt?",
       "multiPuzzle": {
         "answers": ["Mullertahl", "Moezel", "Tenerife", "Oostduinkerke", "Aarschot", "Leuven", "Mollekesberg", "Thailand"],
         "hints": [
@@ -96,8 +112,63 @@
       }
     },
     "na-reizen": {
-      "image": "emilykusopbed.enc",
-      "text": "Wordt vervolgd... 💕"
+      "image": "puzzelaar.enc",
+      "text": "Ze ontdekken samen de wereld, maar één ding is een constante: Emily is een fervente puzzelaar. Kan je deze puzzel oplossen?",
+      "wordle": {
+        "words": ["traag", "bizzey", "kraantje", "diep"],
+        "maxGuesses": 6,
+        "next": "na-wordle"
+      }
+    },
+    "na-wordle": {
+      "image": "schaal.enc",
+      "text": "Jullie hebben het goed samen. Tussen het puzzelen door hebben jullie een andere lievelingsactiviteit. Wat is de uitgewiste tekst?",
+      "puzzle": {
+        "answers": ["dag daarna"],
+        "hint": "Kijk goed naar de foto... 👀",
+        "next": "na-schaal"
+      }
+    },
+    "na-schaal": {
+      "image": "samenkijken over de zee.enc",
+      "text": "Dag daarna inderdaad! 💕",
+      "left": {
+        "label": "En dan?",
+        "next": "na-woordzoeker"
+      },
+      "right": {
+        "label": "En dan?",
+        "next": "na-woordzoeker"
+      }
+    },
+    "na-woordzoeker": {
+      "image": "cadeau.enc",
+      "text": "Wil je graag je volgende cadeautje? 🎁",
+      "left": {
+        "label": "Nee dankjewel 🙄",
+        "next": "geen-cadeau"
+      },
+      "right": {
+        "label": "Ja!! Oplossen! 🎉",
+        "next": "woordzoeker-cadeau"
+      }
+    },
+    "geen-cadeau": {
+      "image": "michaelfuckyou.enc",
+      "text": "Okaaay dan. Geen cadeau. Einde verhaal."
+    },
+    "woordzoeker-cadeau": {
+      "image": "naughtynaughty.enc",
+      "text": "Zoek alle koosnaampjes! Sleep over de letters om een woord te selecteren.",
+      "wordSearch": {
+        "words": ["poepie", "liefjeuh", "aapje", "liefje", "hartediefje"],
+        "gridSize": 12,
+        "next": "cadeau-gewonnen"
+      }
+    },
+    "cadeau-gewonnen": {
+      "image": "cadeau.enc",
+      "text": "🎉 Geef Michael een kus, een knuffel en een poepeknijp om je volgende cadeautje te krijgen! 💋🤗"
     }
   }
 }

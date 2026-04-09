@@ -33,7 +33,16 @@ export async function decryptImage(encryptedData: ArrayBuffer, password: string)
     ciphertext
   );
 
-  const blob = new Blob([decrypted], { type: 'image/jpeg' });
+  const bytes = new Uint8Array(decrypted);
+  let mime = 'image/jpeg';
+  if (bytes[0] === 0x89 && bytes[1] === 0x50 && bytes[2] === 0x4E && bytes[3] === 0x47) {
+    mime = 'image/png';
+  } else if (bytes[0] === 0x47 && bytes[1] === 0x49 && bytes[2] === 0x46) {
+    mime = 'image/gif';
+  } else if (bytes[0] === 0x52 && bytes[1] === 0x49 && bytes[2] === 0x46 && bytes[3] === 0x46) {
+    mime = 'image/webp';
+  }
+  const blob = new Blob([decrypted], { type: mime });
   return URL.createObjectURL(blob);
 }
 

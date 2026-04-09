@@ -9,9 +9,10 @@ function renderPasswordScreen() {
   const app = document.getElementById('app')!;
   app.innerHTML = `
     <div class="password-screen">
-      <h1>A Story About Us</h1>
+      <h1>Dag poepie liefje</h1>
+      <p class="hint">Vandaag kan je 2 van je top-skills toepassen in de hoop je cadeautje te verdienen: swipen en puzzelen.</p>
       <p class="hint">${story.passwordHint}</p>
-      <input type="text" id="password-input" placeholder="Enter the secret word..." autocomplete="off" />
+      <input type="text" id="password-input" placeholder="Wachtwoord..." autocomplete="off" />
       <p class="error" id="error-msg"></p>
     </div>
   `;

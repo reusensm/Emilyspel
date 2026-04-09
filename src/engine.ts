@@ -19,6 +19,41 @@ export interface MultiPuzzle {
   hintAfter: number;
 }
 
+export interface Wordle {
+  word?: string;
+  words?: string[];
+  next: string;
+  maxGuesses: number;
+}
+
+export function getWordleWord(wordle: Wordle): string {
+  if (wordle.words && wordle.words.length > 0) {
+    return wordle.words[Math.floor(Math.random() * wordle.words.length)];
+  }
+  return wordle.word || '';
+}
+
+export interface SlidePuzzle {
+  next: string;
+  gridSize: number;
+}
+
+export interface WordSearch {
+  words: string[];
+  next: string;
+  gridSize: number;
+}
+
+export interface TimelinePhoto {
+  image: string;
+  date: string;
+}
+
+export interface Timeline {
+  photos: TimelinePhoto[];
+  next: string;
+}
+
 export interface Scene {
   image: string;
   text: string;
@@ -26,6 +61,21 @@ export interface Scene {
   right?: Choice;
   puzzle?: Puzzle;
   multiPuzzle?: MultiPuzzle;
+  wordle?: Wordle;
+  slidePuzzle?: SlidePuzzle;
+  wordSearch?: WordSearch;
+  timeline?: Timeline;
+}
+
+export function isTimeline(scene: Scene): boolean {
+  return !!scene.timeline;
+}
+
+export function advanceFromTimeline(): Scene {
+  const scene = getCurrentScene();
+  history.push(currentSceneId);
+  currentSceneId = scene.timeline!.next;
+  return getCurrentScene();
 }
 
 export interface Story {
@@ -52,7 +102,67 @@ export function getCurrentSceneId(): string {
 }
 
 export function isEnding(scene: Scene): boolean {
-  return !scene.left && !scene.right && !scene.puzzle && !scene.multiPuzzle;
+  return !scene.left && !scene.right && !scene.puzzle && !scene.multiPuzzle && !scene.wordle && !scene.slidePuzzle && !scene.wordSearch && !scene.timeline;
+}
+
+export function isSlidePuzzle(scene: Scene): boolean {
+  return !!scene.slidePuzzle;
+}
+
+export function isWordSearch(scene: Scene): boolean {
+  return !!scene.wordSearch;
+}
+
+export function advanceFromSlidePuzzle(): Scene {
+  const scene = getCurrentScene();
+  history.push(currentSceneId);
+  currentSceneId = scene.slidePuzzle!.next;
+  return getCurrentScene();
+}
+
+export function advanceFromWordSearch(): Scene {
+  const scene = getCurrentScene();
+  history.push(currentSceneId);
+  currentSceneId = scene.wordSearch!.next;
+  return getCurrentScene();
+}
+
+export function isWordle(scene: Scene): boolean {
+  return !!scene.wordle;
+}
+
+export type LetterResult = 'correct' | 'present' | 'absent';
+
+export function checkWordleGuess(guess: string, target: string): LetterResult[] {
+  const g = guess.toLowerCase().split('');
+  const t = target.toLowerCase().split('');
+  const result: LetterResult[] = Array(t.length).fill('absent');
+  const remaining = [...t];
+
+  // First pass: correct positions
+  for (let i = 0; i < g.length; i++) {
+    if (g[i] === t[i]) {
+      result[i] = 'correct';
+      remaining[i] = '';
+    }
+  }
+  // Second pass: present but wrong position
+  for (let i = 0; i < g.length; i++) {
+    if (result[i] === 'correct') continue;
+    const idx = remaining.indexOf(g[i]);
+    if (idx >= 0) {
+      result[i] = 'present';
+      remaining[idx] = '';
+    }
+  }
+  return result;
+}
+
+export function advanceFromWordle(): Scene {
+  const scene = getCurrentScene();
+  history.push(currentSceneId);
+  currentSceneId = scene.wordle!.next;
+  return getCurrentScene();
 }
 
 export function isPuzzle(scene: Scene): boolean {
@@ -94,7 +204,7 @@ export function solvePuzzle(answer: string): Scene | null {
   if (!scene.puzzle) return null;
 
   const normalized = answer.trim().toLowerCase();
-  if (scene.puzzle.answers.some(a => a.toLowerCase() === normalized)) {
+  if (scene.puzzle.answers.some(a => levenshtein(normalized, a.toLowerCase()) <= 1)) {
     history.push(currentSceneId);
     currentSceneId = scene.puzzle.next;
     return getCurrentScene();

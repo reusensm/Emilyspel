@@ -1,6 +1,9 @@
-import { Scene, isEnding, isPuzzle, isMultiPuzzle, choose, solvePuzzle, fuzzyMatch, advanceFromMultiPuzzle, restart, getCurrentScene, getProgress, getSceneCount } from './engine';
+import { Scene, isEnding, isPuzzle, isMultiPuzzle, isWordle, isSlidePuzzle, isWordSearch, isTimeline, choose, solvePuzzle, fuzzyMatch, advanceFromMultiPuzzle, checkWordleGuess, advanceFromWordle, getWordleWord, advanceFromTimeline, restart, getCurrentScene, getProgress, getSceneCount } from './engine';
 import { setupSwipe } from './swipe';
 import { decryptImage } from './crypto';
+import { renderSlidePuzzle } from './slidepuzzle';
+import { renderWordSearch } from './wordsearch';
+import { renderTimeline, setTimelinePassword } from './timeline';
 
 let password: string = '';
 let cleanupSwipe: (() => void) | null = null;
@@ -8,6 +11,7 @@ const imageCache = new Map<string, string>();
 
 export function setPassword(pw: string) {
   password = pw;
+  setTimelinePassword(pw);
 }
 
 async function loadImage(filename: string): Promise<string> {
@@ -42,6 +46,10 @@ export async function renderScene(scene: Scene) {
   const ending = isEnding(scene);
   const puzzle = isPuzzle(scene);
   const multi = isMultiPuzzle(scene);
+  const wordle = isWordle(scene);
+  const slide = isSlidePuzzle(scene);
+  const wordSearch = isWordSearch(scene);
+  const timeline = isTimeline(scene);
 
   // Clean up previous swipe
   if (cleanupSwipe) {
@@ -52,10 +60,47 @@ export async function renderScene(scene: Scene) {
   // Load image
   const imageUrl = await loadImage(scene.image);
 
-  const cardClass = ending ? 'ending-card' : (puzzle || multi) ? 'puzzle-card' : '';
+  const isSpecial = puzzle || multi || wordle || slide || wordSearch || timeline;
+  const cardClass = ending ? 'ending-card' : slide ? 'puzzle-card slide-card' : timeline ? 'puzzle-card timeline-card' : isSpecial ? 'puzzle-card' : '';
 
   let contentHtml = '';
-  if (multi) {
+  let chosenWord = '';
+  if (timeline) {
+    contentHtml = `
+      <div class="card-text" style="font-size:0.95rem;margin-bottom:8px;">${scene.text}</div>
+      <div class="timeline-container"></div>
+    `;
+  } else if (slide) {
+    const sp = scene.slidePuzzle!;
+    contentHtml = `
+      <div class="card-text">${scene.text}</div>
+      <div class="slide-grid" style="display:grid; grid-template-columns:repeat(${sp.gridSize},1fr); gap:2px; margin-bottom:10px;"></div>
+      <p class="slide-msg" style="text-align:center;font-weight:700;color:white;min-height:1.2em;"></p>
+    `;
+  } else if (wordSearch) {
+    contentHtml = `
+      <div class="card-text">${scene.text}</div>
+      <div class="ws-grid"></div>
+      <div class="ws-words"></div>
+      <p class="ws-msg">0 / ${scene.wordSearch!.words.length} gevonden</p>
+    `;
+  } else if (wordle) {
+    const w = scene.wordle!;
+    chosenWord = getWordleWord(w);
+    const rows = Array.from({ length: w.maxGuesses }, (_, r) =>
+      `<div class="wordle-row" data-row="${r}">${
+        Array.from({ length: chosenWord.length }, () => `<div class="wordle-cell"></div>`).join('')
+      }</div>`
+    ).join('');
+    contentHtml = `
+      <div class="card-text">${scene.text}</div>
+      <div class="wordle-grid">${rows}</div>
+      <div class="puzzle-input-wrap">
+        <input type="text" class="puzzle-input wordle-input" placeholder="Raad het woord (${chosenWord.length} letters)..." maxlength="${chosenWord.length}" autocomplete="off" />
+        <p class="puzzle-error"></p>
+      </div>
+    `;
+  } else if (multi) {
     const mp = scene.multiPuzzle!;
     const blanks = mp.answers.map((_, i) => `<span class="multi-slot" data-idx="${i}">???</span>`).join(' ');
     contentHtml = `
@@ -64,6 +109,7 @@ export async function renderScene(scene: Scene) {
       <div class="puzzle-input-wrap">
         <input type="text" class="puzzle-input" placeholder="Raad een plaats..." autocomplete="off" />
         <p class="puzzle-error"></p>
+        <p class="multi-hint"></p>
       </div>
       <p class="multi-progress">0 / ${mp.answers.length}</p>
     `;
@@ -93,9 +139,9 @@ export async function renderScene(scene: Scene) {
   app.innerHTML = `
     <div class="game-container">
       <div class="card card-enter ${cardClass}">
-        <div class="card-bg" ${imageUrl ? `style="background-image: url('${imageUrl}')"` : ''}></div>
-        <div class="card-overlay"></div>
-        ${!ending && !puzzle && !multi ? `
+        <div class="card-bg" ${imageUrl && !slide ? `style="background-image: url('${imageUrl}')"` : ''}></div>
+        <div class="card-overlay" ${slide ? 'style="background: rgba(0,0,0,0.85)"' : ''}></div>
+        ${!ending && !isSpecial ? `
           <div class="swipe-indicator left-indicator">&#x2190;</div>
           <div class="swipe-indicator right-indicator">&#x2192;</div>
         ` : ''}
@@ -112,6 +158,80 @@ export async function renderScene(scene: Scene) {
     app.querySelector('.restart-btn')!.addEventListener('click', () => {
       restart();
       renderScene(getCurrentScene());
+    });
+    return;
+  }
+
+  if (slide) {
+    const cardContent = app.querySelector('.card-content') as HTMLElement;
+    renderSlidePuzzle(cardContent, imageUrl, scene.slidePuzzle!, (next) => renderScene(next));
+    return;
+  }
+
+  if (wordSearch) {
+    const cardContent = app.querySelector('.card-content') as HTMLElement;
+    renderWordSearch(cardContent, scene.wordSearch!, (next) => renderScene(next));
+    return;
+  }
+
+  if (timeline) {
+    const tlContainer = app.querySelector('.timeline-container') as HTMLElement;
+    await renderTimeline(tlContainer, scene.timeline!, imageCache, () => {
+      renderScene(advanceFromTimeline());
+    });
+    return;
+  }
+
+  if (wordle) {
+    const theWord = chosenWord;
+    const input = app.querySelector('.wordle-input') as HTMLInputElement;
+    const error = app.querySelector('.puzzle-error') as HTMLElement;
+    let currentRow = 0;
+
+    input.focus();
+    input.addEventListener('keydown', (e) => {
+      if (e.key !== 'Enter') return;
+      const guess = input.value.trim().toLowerCase();
+      if (guess.length !== theWord.length) {
+        error.textContent = `Het woord moet ${theWord.length} letters zijn!`;
+        return;
+      }
+
+      const results = checkWordleGuess(guess, theWord);
+      const row = app.querySelector(`.wordle-row[data-row="${currentRow}"]`)!;
+      const cells = row.querySelectorAll('.wordle-cell');
+
+      cells.forEach((cell, i) => {
+        const el = cell as HTMLElement;
+        el.textContent = guess[i].toUpperCase();
+        el.classList.add(`wordle-${results[i]}`);
+        el.style.animationDelay = `${i * 0.1}s`;
+        el.classList.add('wordle-flip');
+      });
+
+      input.value = '';
+      currentRow++;
+
+      if (guess === theWord.toLowerCase()) {
+        error.textContent = 'Gewonnen! 🎉';
+        input.disabled = true;
+        setTimeout(() => {
+          const next = advanceFromWordle();
+          renderScene(next);
+        }, 1200);
+        return;
+      }
+
+      if (currentRow >= scene.wordle!.maxGuesses) {
+        error.textContent = `Het was "${theWord}"! Probeer opnieuw...`;
+        input.disabled = true;
+        setTimeout(() => {
+          renderScene(scene);
+        }, 2000);
+        return;
+      }
+
+      error.textContent = '';
     });
     return;
   }
@@ -186,12 +306,11 @@ export async function renderScene(scene: Scene) {
 
         // Give a hint every hintAfter wrong guesses
         if (wrongCount % mp.hintAfter === 0) {
+          const hintEl = app.querySelector('.multi-hint') as HTMLElement;
           const remaining = mp.answers.filter((_, i) => !found.has(i));
           const hintIdx = mp.answers.indexOf(remaining[Math.floor(Math.random() * remaining.length)]);
           const hint = mp.hints[hintIdx] || `Denk aan ${mp.answers[hintIdx].charAt(0)}...`;
-          setTimeout(() => {
-            error.textContent = `Tipje: ${hint}`;
-          }, 1500);
+          hintEl.textContent = `Tipje: ${hint}`;
         }
 
         const card = app.querySelector('.card') as HTMLElement;
