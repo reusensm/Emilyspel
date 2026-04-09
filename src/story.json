@@ -93,17 +93,17 @@
     },
     "na-alcohol": {
       "image": "zatgevoerd.enc",
-      "text": "Succes, Michael is zatgevoerd en het is meteen koekenbak. Jullie zijn onafscheidelijk en ontdekken niet alleen Grasheide, maar ook de wereld. Weet je welke plaatsen ze allemaal hebben ontdekt?",
+      "text": "Succes, Michael is zatgevoerd en het is meteen koekenbak. Jullie zijn onafscheidelijk en ontdekken niet alleen Grasheide, maar ook de wereld. Weet je welke plaatsen jullie allemaal hebben ontdekt?",
       "multiPuzzle": {
         "answers": ["Mullertahl", "Moezel", "Tenerife", "Oostduinkerke", "Aarschot", "Leuven", "Mollekesberg", "Thailand"],
         "hints": [
           "Denk aan Luxemburg en wandelen...",
           "Denk aan wijn en Duitsland...",
-          "Denk aan zon en een vulkanisch eiland...",
+          "Denk aan zon en een vulkanisch eiland... BOOOORING...",
           "Denk aan de kust en garnalen...",
           "Denk aan een stad in Vlaams-Brabant...",
           "Denk aan de studentenstad...",
-          "Denk aan een berg dicht bij huis...",
+          "Denk aan een berg dicht bij Michael thuis...",
           "Denk aan tempels en pad thai..."
         ],
         "wrongText": "Dat is ook een mooie plaats, maar dat is niet wat we zoeken!",
@@ -149,7 +149,7 @@
         "next": "geen-cadeau"
       },
       "right": {
-        "label": "Ja!! Oplossen! 🎉",
+        "label": "Ja!! Ik los nog een laatste puzzel op! 🎉",
         "next": "woordzoeker-cadeau"
       }
     },
