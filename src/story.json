@@ -115,8 +115,56 @@
       "image": "puzzelaar.enc",
       "text": "Ze ontdekken samen de wereld, maar één ding is een constante: Emily is een fervente puzzelaar. Kan je deze puzzel oplossen?",
       "wordle": {
-        "words": ["traag", "bizzey", "kraantje", "diep"],
+        "word": "traag",
         "maxGuesses": 6,
+        "next": "wordle-2"
+      }
+    },
+    "wordle-2": {
+      "image": "puzzelaar.enc",
+      "text": "Goed zo! Nog eentje 🧩",
+      "wordle": {
+        "word": "bizzey",
+        "maxGuesses": 6,
+        "next": "wordle-3"
+      }
+    },
+    "wordle-3": {
+      "image": "puzzelaar.enc",
+      "text": "Nog twee! 🧩",
+      "wordle": {
+        "word": "kraantje",
+        "maxGuesses": 6,
+        "next": "wordle-4"
+      }
+    },
+    "wordle-4": {
+      "image": "puzzelaar.enc",
+      "text": "Nog eentje! 🧩",
+      "wordle": {
+        "word": "diep",
+        "maxGuesses": 6,
+        "next": "wordle-5"
+      }
+    },
+    "wordle-5": {
+      "image": "puzzelaar.enc",
+      "text": "Laatste eentje! 🧩",
+      "wordle": {
+        "word": "Molleke",
+        "maxGuesses": 6,
+        "next": "molleke-cadeau"
+      }
+    },
+    "molleke-cadeau": {
+      "image": "cadeau.enc",
+      "text": "Goed geraden dat laatste woord. Dat heeft mogelijk iets te maken met je volgende cadeautje? Misschien moet je eens heel lief aan Michael vragen of hij het je al wil geven?",
+      "left": {
+        "label": "Verder! 🎁",
+        "next": "na-wordle"
+      },
+      "right": {
+        "label": "Verder! 🎁",
         "next": "na-wordle"
       }
     },
@@ -161,14 +209,14 @@
       "image": "naughtynaughty.enc",
       "text": "Zoek alle koosnaampjes! Sleep over de letters om een woord te selecteren.",
       "wordSearch": {
-        "words": ["poepie", "liefjeuh", "aapje", "liefje", "hartediefje"],
+        "words": ["poepie", "liefjeuh", "aapje", "liefje", "hartediefje", "poepiemoepie", "gesha"],
         "gridSize": 12,
         "next": "cadeau-gewonnen"
       }
     },
     "cadeau-gewonnen": {
       "image": "cadeau.enc",
-      "text": "🎉 Geef Michael een kus, een knuffel en een poepeknijp om je volgende cadeautje te krijgen! 💋🤗"
+      "text": "🎉 Amai, jullie zijn duidelijk een goed stel!  Misschien krijg je van Michael nu wel een cadeautje dat dat simboliseert 💋🤗"
     }
   }
 }
